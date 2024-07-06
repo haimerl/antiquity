@@ -1,0 +1,11 @@
+{
+    "name": "antiquity",
+    "version": "0.0.1",
+    "main": "dist/antiquity.js",
+    "scripts": {
+        "build": "vite build"
+    },
+    "devDependencies": {
+        "vite": "^5.3.1"
+    }
+}
