@@ -64,6 +64,15 @@
         return target;
     };   
 
+    anti.flattenArray = function(arr) {
+        if (!Array.isArray(arr)) {
+            throw new TypeError('Input must be an array');
+        }
+        return arr.reduce(function(flat, toFlatten) {
+            return flat.concat(Array.isArray(toFlatten) ? anti.flattenArray(toFlatten) : toFlatten);
+        }, []);
+    };
+
 
     global.anti = anti;
 })(this);
