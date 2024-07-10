@@ -43,6 +43,38 @@
         return clonedObj;
     };
     
+    anti.deepDiff = function(obj1, obj2) {
+        if (obj1 === obj2) return {};    
+        if (obj1 === null || typeof obj1 !== 'object' || obj2 === null || typeof obj2 !== 'object') {
+            return obj2;
+        }
+        if (Array.isArray(obj1) && Array.isArray(obj2)) {
+            if (obj1.length !== obj2.length) {
+                return obj2;
+            }
+            const diffArray = obj1.map((item, index) => antiquity.deepDiff(item, obj2[index]));
+            if (diffArray.some(diffItem => Object.keys(diffItem).length > 0)) {
+                return diffArray;
+            }
+            return {};
+        }
+        const diff = {};
+        Object.keys(obj1).forEach(key => {
+            if (!obj2.hasOwnProperty(key)) {
+                diff[key] = undefined;
+            } else {
+                const deepDiffResult = antiquity.deepDiff(obj1[key], obj2[key]);
+                if (Object.keys(deepDiffResult).length) diff[key] = deepDiffResult;
+            }
+        });
+        Object.keys(obj2).forEach(key => {
+            if (!obj1.hasOwnProperty(key)) {
+                diff[key] = obj2[key];
+            }
+        });
+        return diff;
+    };
+
     anti.merge = function(target, source) {
         if (typeof target !== 'object' || target === null || typeof source !== 'object' || source === null) {
             return target;
