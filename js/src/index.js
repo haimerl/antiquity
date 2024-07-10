@@ -190,5 +190,38 @@
         return Array.from(new Set(array));
     };
 
+    anti.retry = function(fn, retries) {
+        if (typeof fn !== 'function') {
+            throw new TypeError('First argument must be a function');
+        }
+        if (typeof retries !== 'number' || retries < 0 || !Number.isInteger(retries)) {
+            throw new TypeError('Second argument must be a non-negative integer');
+        }
+        return function() {
+            var context = this, args = arguments;
+            var attempt = function() {
+                try {
+                    // Ensure the function call is wrapped in a Promise.resolve to handle both sync and async functions
+                    return Promise.resolve(fn.apply(context, args)).catch(function(error) {
+                        if (retries > 0) {
+                            retries--;
+                            return attempt();
+                        } else {
+                            throw error;
+                        }
+                    });
+                } catch (error) {
+                    if (retries > 0) {
+                        retries--;
+                        return attempt();
+                    } else {
+                        return Promise.reject(error);
+                    }
+                }
+            };
+            return attempt();
+        };
+    };
+
     global.anti = anti;
 })(this);
