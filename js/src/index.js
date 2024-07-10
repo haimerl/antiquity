@@ -255,5 +255,17 @@
         });
     };
 
+    anti.pipe = function(...fns) {
+        if (!fns.every(fn => typeof fn === 'function')) {
+            throw new TypeError('All arguments must be functions');
+        }    
+        return function(arg) {
+            if (fns.length === 0) {
+                return arg;
+            }        
+            return fns.reduce((result, fn) => fn(result), arg);
+        };
+    };
+
     global.anti = anti;
 })(this);
