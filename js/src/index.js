@@ -338,5 +338,13 @@
         };
     };   
 
+    anti.compact = function(array) {
+        if (!Array.isArray(array)) {
+            throw new TypeError('Input must be an array');
+        }
+        return array.filter(Boolean);
+    };
+
+
     global.anti = anti;
 })(this);
