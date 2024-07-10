@@ -131,5 +131,30 @@
         return results;
     };
 
+    anti.range = function(start, end, step) {
+        if (typeof start !== 'number' || (end !== undefined && typeof end !== 'number') || (step !== undefined && typeof step !== 'number')) {
+            throw new TypeError('All arguments must be numbers');
+        }
+        var rangeArray = [];
+        if (typeof end === 'undefined') {
+            end = start;
+            start = 0;
+        }
+        step = step || 1;        
+        if (step === 0) {
+            throw new RangeError('Step cannot be zero');
+        }    
+        if (step > 0) {
+            for (var i = start; i < end; i += step) {
+                rangeArray.push(i);
+            }
+        } else {
+            for (var i = start; i > end; i += step) {
+                rangeArray.push(i);
+            }
+        }    
+        return rangeArray;
+    };
+
     global.anti = anti;
 })(this);
