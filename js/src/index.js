@@ -223,5 +223,37 @@
         };
     };
 
+    anti.escapeHTML = function(str) {
+        if (typeof str !== 'string') {
+            throw new TypeError('Input must be a string');
+        }
+        return str.replace(/[&<>"']/g, function(match) {
+            const escapeMap = {
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#39;'  // Changed to &#39; for consistency
+            };
+            return escapeMap[match];
+        });
+    };
+
+    anti.unescapeHTML = function(str) {
+        if (typeof str !== 'string') {
+            throw new TypeError('Input must be a string');
+        }
+        return str.replace(/&amp;|&lt;|&gt;|&quot;|&#39;/g, function(match) {
+            const unescapeMap = {
+                '&amp;': '&',
+                '&lt;': '<',
+                '&gt;': '>',
+                '&quot;': '"',
+                '&#39;': "'"
+            };
+            return unescapeMap[match];
+        });
+    };
+
     global.anti = anti;
 })(this);
