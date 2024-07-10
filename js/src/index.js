@@ -314,6 +314,29 @@
         };
     };
 
-    
+    anti.debounceCallback = function(callback, delay, immediate) {
+        if (typeof callback !== 'function') {
+            throw new TypeError('Expected a function');
+        }
+        if (typeof delay !== 'number' || delay < 0) {
+            throw new TypeError('Expected delay to be a non-negative number');
+        }
+        var timeout;
+        return function() {
+            var context = this, args = arguments;
+            var callNow = immediate && !timeout;
+            clearTimeout(timeout);
+            timeout = setTimeout(function() {
+                timeout = null;
+                if (!immediate) {
+                    callback.apply(context, args);
+                }
+            }, delay);
+            if (callNow) {
+                callback.apply(context, args);
+            }
+        };
+    };   
+
     global.anti = anti;
 })(this);
