@@ -173,7 +173,7 @@
                 return false;
             }    
             if (typeof obj1[key] === 'object' && obj1[key] !== null && typeof obj2[key] === 'object' && obj2[key] !== null) {
-                if (!antiquity.isEqual(obj1[key], obj2[key])) {
+                if (!anti.isEqual(obj1[key], obj2[key])) {
                     return false;
                 }
             } else if (obj1[key] !== obj2[key]) {
@@ -188,6 +188,18 @@
             throw new TypeError('Input must be an array');
         }
         return Array.from(new Set(array));
+    };
+
+    anti.uniqueValues = function(array) {
+        if (!Array.isArray(array)) {
+            throw new TypeError('Expected an array');
+        }
+        return array.reduce((acc, item) => {
+            if (!acc.includes(item)) {
+                acc.push(item);
+            }
+            return acc;
+        }, []);
     };
 
     anti.retry = function(fn, retries) {
