@@ -293,5 +293,27 @@
         };
     };
 
+    anti.debouncePromise = function(fn, wait) {
+        if (typeof fn !== 'function') {
+            throw new TypeError('Expected a function');
+        }
+        if (typeof wait !== 'number' || wait < 0) {
+            throw new TypeError('Expected wait to be a non-negative number');
+        }
+        var timeout;
+        return function() {
+            var context = this, args = arguments;
+            return new Promise(function(resolve, reject) {
+                var later = function() {
+                    timeout = null;
+                    Promise.resolve(fn.apply(context, args)).then(resolve).catch(reject);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            });
+        };
+    };
+
+    
     global.anti = anti;
 })(this);
