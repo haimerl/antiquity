@@ -434,5 +434,17 @@
         });
     };
     
+    anti.randomString = function(length) {
+        if (typeof length !== 'number' || length <= 0 || !Number.isInteger(length)) {
+            throw new TypeError('Expected a positive integer for length');
+        }
+        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        let result = '';
+        for (let i = 0; i < length; i++) {
+            result += chars.charAt(Math.floor(Math.random() * chars.length));
+        }
+        return result;
+    };
+
     global.anti = anti;
 })(this);
