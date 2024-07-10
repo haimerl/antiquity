@@ -73,6 +73,15 @@
         }, []);
     };
 
+    anti.difference = function(array, values) {
+        if (!Array.isArray(array) || !Array.isArray(values)) {
+            throw new TypeError('Both arguments should be arrays');
+        }
+        return array.filter(function(el) {
+            return !values.includes(el);
+        });
+    };
+
 
     global.anti = anti;
 })(this);
