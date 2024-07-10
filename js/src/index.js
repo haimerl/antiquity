@@ -96,5 +96,25 @@
         return array;
     };
 
+    anti.groupBy = function(array, key) {
+        if (!Array.isArray(array)) {
+            throw new TypeError('Input must be an array');
+        }
+        if (typeof key !== 'string') {
+            throw new TypeError('Key must be a string');
+        }
+        return array.reduce(function(result, currentValue) {
+            const groupKey = currentValue[key];
+            if (groupKey === undefined || groupKey === null) {
+                return result;
+            }
+            if (!result[groupKey]) {
+                result[groupKey] = [];
+            }
+            result[groupKey].push(currentValue);
+            return result;
+        }, {});
+    };
+
     global.anti = anti;
 })(this);
