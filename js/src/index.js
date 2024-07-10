@@ -183,5 +183,12 @@
         return true;
     };
 
+    anti.uniq = function(array) {
+        if (!Array.isArray(array)) {
+            throw new TypeError('Input must be an array');
+        }
+        return Array.from(new Set(array));
+    };
+
     global.anti = anti;
 })(this);
