@@ -267,5 +267,31 @@
         };
     };
 
+    anti.debounce = function(func, wait, immediate) {
+        if (typeof func !== 'function') {
+            throw new TypeError('Expected a function');
+        }
+        if (typeof wait !== 'number' || wait < 0) {
+            throw new TypeError('Expected wait to be a non-negative number');
+        }
+        var timeout;
+        return function() {
+            var context = this, args = arguments;
+            var later = function() {
+                timeout = null;
+                if (!immediate) {
+                    func.apply(context, args);
+                }
+            };
+            var callNow = immediate && !timeout;
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait);
+            if (callNow) {
+                timeout = null; // Clear the timeout to prevent later execution
+                return func.apply(context, args);
+            }
+        };
+    };
+
     global.anti = anti;
 })(this);
