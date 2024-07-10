@@ -116,5 +116,20 @@
         }, {});
     };
 
+    anti.chunkArray = function(array, size) {
+        if (!Array.isArray(array)) {
+            throw new TypeError('Input must be an array');
+        }
+        if (typeof size !== 'number' || size <= 0) {
+            throw new TypeError('Size must be a positive integer');
+        }        
+        var results = [];
+        var copy = array.slice();
+        while (copy.length) {
+            results.push(copy.splice(0, size));
+        }    
+        return results;
+    };
+
     global.anti = anti;
 })(this);
