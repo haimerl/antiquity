@@ -345,7 +345,7 @@
         return array.filter(Boolean);
     };
 
-    antiquity.parseQueryString = function(input) {
+    anti.parseQueryString = function(input) {
         if (typeof input !== 'string') {
             throw new TypeError('Expected a string');
         }    
@@ -371,6 +371,24 @@
         }, {});
     };
 
+    anti.sortByKey = function(array, key) {
+        if (!Array.isArray(array)) {
+            throw new TypeError('Expected an array');
+        }
+        if (typeof key !== 'string') {
+            throw new TypeError('Expected key to be a string');
+        }
+        return array.slice().sort((a, b) => {
+            var x = a[key];
+            var y = b[key];  
+            if (x === undefined || x === null) return 1;
+            if (y === undefined || y === null) return -1;
+            if (typeof x === 'string' && typeof y === 'string') {
+                return x.localeCompare(y); // Case-insensitive sorting for strings
+            }
+            return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+        });
+    };
     
     global.anti = anti;
 })(this);
