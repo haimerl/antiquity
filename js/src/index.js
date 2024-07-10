@@ -345,6 +345,32 @@
         return array.filter(Boolean);
     };
 
+    antiquity.parseQueryString = function(input) {
+        if (typeof input !== 'string') {
+            throw new TypeError('Expected a string');
+        }    
+        // Extract the query string part from the input
+        var queryString = input.indexOf('?') !== -1 ? input.split('?')[1] : input;
+        return queryString.split('&').reduce(function(acc, pair) {
+            if (pair) {
+                var [key, value] = pair.split('=');
+                key = decodeURIComponent(key.replace(/\+/g, ' '));
+                value = value ? decodeURIComponent(value.replace(/\+/g, ' ')) : '';
+    
+                if (acc.hasOwnProperty(key)) {
+                    if (Array.isArray(acc[key])) {
+                        acc[key].push(value);
+                    } else {
+                        acc[key] = [acc[key], value];
+                    }
+                } else {
+                    acc[key] = value;
+                }
+            }
+            return acc;
+        }, {});
+    };
 
+    
     global.anti = anti;
 })(this);
